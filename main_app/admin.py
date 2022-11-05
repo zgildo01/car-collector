@@ -1,6 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Cat
+from .models import Car
 
-admin.site.register(Cat)
+admin.site.register(Car)
