@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.core.validators import MinValueValidator
 
 # Create your models here.
 class Car(models.Model):
@@ -22,3 +23,16 @@ class Servicing(models.Model):
     return f"Servicing: {self.work_done} on {self.date}"
   class Meta:
     ordering = ['-date']
+
+class Mod(models.Model):
+  name = models.CharField(max_length=50)
+  price=models.FloatField(
+    validators=[MinValueValidator(0.0)]
+  )
+
+  def __str__(self):
+    return self.name
+  
+  def get_absolute_url(self):
+      return reverse("mods_detail", kwargs={"pk": self.id})
+  

@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Car
+from .models import Car, Mod
 from .forms import ServicingForm
+from django.views.generic import ListView, DetailView
 
 # Define the home view
 class CarCreate(CreateView):
@@ -42,3 +43,21 @@ def add_servicing(request, car_id):
     new_servicing.car_id = car_id
     new_servicing.save()
   return redirect('cars_detail', car_id=car_id)
+
+class ModCreate(CreateView):
+  model = Mod
+  fields = '__all__'
+
+class ModList(ListView):
+  model = Mod
+
+class ModDetail(DetailView):
+  model = Mod
+
+class ModUpdate(UpdateView):
+  model = Mod
+  fields = '__all__'
+
+class ModDelete(DeleteView):
+  model = Mod
+  success_url = '/mods/'
