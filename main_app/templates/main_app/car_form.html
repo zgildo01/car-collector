@@ -6,9 +6,12 @@
 {% endblock %}
 
 {% block content %}
-
 <div class="page-header">
-  <h1>Add a Car</h1>
+  {% if car %}
+    <h1>Edit {{car.make}}{{car.model}}</h1>
+  {% else %}
+    <h1>Add a Car</h1>
+  {% endif %}
 </div>
 <form action="" method="post" class="form-container">
   {% csrf_token %}
