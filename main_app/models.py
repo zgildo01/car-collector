@@ -13,3 +13,12 @@ class Car(models.Model):
   
   def get_absolute_url(self):
     return reverse('cars_detail', kwargs={'car_id': self.id})
+
+class Servicing(models.Model):
+  date = models.DateField('Servicing Date')
+  work_done = models.TextField(max_length=250)
+  car = models.ForeignKey(Car, on_delete=models.CASCADE)
+  def __str__(self):
+    return f"Servicing: {self.work_done} on {self.date}"
+  class Meta:
+    ordering = ['-date']

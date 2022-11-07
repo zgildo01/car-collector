@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Car
+from .forms import ServicingForm
 
 # Define the home view
 class CarCreate(CreateView):
@@ -20,7 +21,11 @@ def cars_index(request):
 
 def cars_detail(request, car_id):
   car = Car.objects.get(id=car_id)
-  return render(request, 'cars/detail.html', { 'car': car })
+  servicing_form = ServicingForm()
+  return render(request, 'cars/detail.html', {
+    'car': car,
+    'servicing_form': servicing_form
+  })
 
 class CarUpdate(UpdateView):
   model = Car
@@ -29,3 +34,11 @@ class CarUpdate(UpdateView):
 class CarDelete(DeleteView):
   model = Car
   success_url = '/cars/'
+
+def add_servicing(request, car_id):
+  form = ServicingForm(request.POST)
+  if form.is_valid():
+    new_servicing = form.save(commit=False)
+    new_servicing.car_id = car_id
+    new_servicing.save()
+  return redirect('cars_detail', car_id=car_id)
