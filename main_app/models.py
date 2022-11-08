@@ -2,12 +2,24 @@ from django.db import models
 from django.urls import reverse
 from django.core.validators import MinValueValidator
 
-# Create your models here.
+class Mod(models.Model):
+  name = models.CharField(max_length=50)
+  price=models.FloatField(
+    validators=[MinValueValidator(0.0)]
+  )
+
+  def __str__(self):
+    return self.name
+  
+  def get_absolute_url(self):
+      return reverse("mods_detail", kwargs={"pk": self.id})
+
 class Car(models.Model):
   make = models.CharField(max_length=100)
   model = models.CharField(max_length=100)
   year = models.IntegerField()
   quote = models.TextField(max_length=250)
+  mods = models.ManyToManyField(Mod)
 
   def __str__(self):
     return self.model
@@ -24,15 +36,4 @@ class Servicing(models.Model):
   class Meta:
     ordering = ['-date']
 
-class Mod(models.Model):
-  name = models.CharField(max_length=50)
-  price=models.FloatField(
-    validators=[MinValueValidator(0.0)]
-  )
-
-  def __str__(self):
-    return self.name
-  
-  def get_absolute_url(self):
-      return reverse("mods_detail", kwargs={"pk": self.id})
   

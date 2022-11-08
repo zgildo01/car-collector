@@ -22,10 +22,12 @@ def cars_index(request):
 
 def cars_detail(request, car_id):
   car = Car.objects.get(id=car_id)
+  mods_car_doesnt_have = Mod.objects.exclude(id__in = car.mods.all().values_list('id'))
   servicing_form = ServicingForm()
   return render(request, 'cars/detail.html', {
     'car': car,
-    'servicing_form': servicing_form
+    'servicing_form': servicing_form,
+    'mods': mods_car_doesnt_have
   })
 
 class CarUpdate(UpdateView):
@@ -61,3 +63,7 @@ class ModUpdate(UpdateView):
 class ModDelete(DeleteView):
   model = Mod
   success_url = '/mods/'
+
+def assoc_mod(request, car_id, mod_id):
+  Car.objects.get(id=car_id).mods.add(mod_id)
+  return redirect('cars_detail', car_id=car_id)
