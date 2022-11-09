@@ -20,7 +20,13 @@ main > section {
 }
 
 .logo-container {
+  display: flex;
+  align-items: center;
   max-width: 375px;
+}
+
+.logo-container h1 {
+  font-size: large;
 }
 
 .cat-container {
